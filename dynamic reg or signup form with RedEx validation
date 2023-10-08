@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Form Validation</title>
+</head>
+<body>
+    <h1>Dynamic Form Validation</h1>
+    <form id="myForm" action="submit.php" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+        <span id="nameError" style="color: red;"></span>
+        <span id="nameValid" style="color: green; display: none;"></span><br><br>
+        
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone">
+        <span id="phoneError" style="color: red;"></span>
+        <span id="phoneValid" style="color: green; display: none;"></span><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email">
+        <span id="emailError" style="color: red;"></span>
+        <span id="emailValid" style="color: green; display: none;"></span><br><br>
+
+        <label for="agree">I agree:</label>
+        <input type="checkbox" id="agree" name="agree">
+        <span id="agreeError" style="color: red;"></span><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            var valid = true;
+
+            var name = document.getElementById('name').value;
+            var phone = document.getElementById('phone').value;
+            var email = document.getElementById('email').value;
+            var agree = document.getElementById('agree').checked;
+
+            var nameError = document.getElementById('nameError');
+            var phoneError = document.getElementById('phoneError');
+            var emailError = document.getElementById('emailError');
+            var agreeError = document.getElementById('agreeError');
+
+            // Reset previous messages
+            nameError.textContent = '';
+            phoneError.textContent = '';
+            emailError.textContent = '';
+            agreeError.textContent = '';
+
+            // Check if inputs are empty
+            if (name === '') {
+                nameError.textContent = 'Name is required.';
+                valid = false;
+            }
+
+            if (phone === '') {
+                phoneError.textContent = 'Phone number is required.';
+                valid = false;
+            } else {
+                var phoneRegex = /^\d{10}$/;
+                if (!phone.match(phoneRegex)) {
+                    phoneError.textContent = 'Invalid phone number.';
+                    valid = false;
+                }
+            }
+
+            if (email === '') {
+                emailError.textContent = 'Email is required.';
+                valid = false;
+            } else {
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.match(emailRegex)) {
+                    emailError.textContent = 'Invalid email address.';
+                    valid = false;
+                }
+            }
+
+            if (!agree) {
+                agreeError.textContent = 'You must agree to proceed.';
+                valid = false;
+            }
+
+            if (!valid) {
+                event.preventDefault();
+            }
+        });
+
+        // Add event listeners for real-time validation
+        document.getElementById('name').addEventListener('input', function() {
+            var name = this.value;
+            var nameError = document.getElementById('nameError');
+            var nameValid = document.getElementById('nameValid');
+
+            if (name === '') {
+                nameError.textContent = 'Name is required.';
+                nameValid.style.display = 'none'; // Hide valid message
+            } else {
+                nameError.textContent = '';
+                nameValid.style.display = 'none'; // Hide valid message
+            }
+        });
+
+        document.getElementById('phone').addEventListener('input', function() {
+            var phone = this.value;
+            var phoneError = document.getElementById('phoneError');
+            var phoneValid = document.getElementById('phoneValid');
+
+            if (phone === '') {
+                phoneError.textContent = 'Phone number is required.';
+                phoneValid.style.display = 'none'; // Hide valid message
+            } else {
+                var phoneRegex = /^\d{10}$/;
+                if (!phone.match(phoneRegex)) {
+                    phoneError.textContent = 'Invalid phone number.';
+                    phoneValid.style.display = 'none'; // Hide valid message
+                } else {
+                    phoneError.textContent = '';
+                    phoneValid.style.display = 'none'; // Hide valid message
+                }
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+            var email = this.value;
+            var emailError = document.getElementById('emailError');
+            var emailValid = document.getElementById('emailValid');
+
+            if (email === '') {
+                emailError.textContent = 'Email is required.';
+                emailValid.style.display = 'none'; // Hide valid message
+            } else {
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.match(emailRegex)) {
+                    emailError.textContent = 'Invalid email address.';
+                    emailValid.style.display = 'none'; // Hide valid message
+                } else {
+                    emailError.textContent = '';
+                    emailValid.style.display = 'none'; // Hide valid message
+                }
+            }
+        });
+    </script>
+</body>
+</html>
